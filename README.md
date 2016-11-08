@@ -1,8 +1,9 @@
-# LiCpp
-Header-only library enabling Erlangs "Let it Crash" paradigm in C++
+# LiCpp - Header-only library to "Let it Crash" in C++
 
 Name: LiC++ - Let it Crash in C++
+
 Copyright: Boost Software License - Version 1.0 - August 17th, 2003
+
 Author: Christoph Woskowski, cwo_at_zuehlke.com
 
 Description:
@@ -17,4 +18,5 @@ threads for monitoring purposes. If one thread is dying (getting killed or
 killing itself by throwing an exception) the monitoring thread gets notified
 and may react by replacing the dead one. See the following link for more
 information regarding "Let it Crash" (LiC):
+
 http://blog.zuehlke.com/en/is-it-safe-to-let-it-crash/
