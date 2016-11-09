@@ -25,13 +25,13 @@ DEALINGS IN THE SOFTWARE.
 */
 
 
-//  Name: LiC++ - Let it Crash in C++ - Translate Example
+//  Name: LiC++ - Let it Crash in C++ - Translate Service Example
 //  Copyright: Boost Software License - Version 1.0 - August 17th, 2003
 //  Author: Christoph Woskowski, cwo_at_zuehlke.com
 //
 //  Description:
-//    This is the implementation of the translate example from the book
-//    "Seven Languages in Seven Weeks" by Bruce A. Tate. The original
+//    This is the implementation of the translate service example from the
+//    book "Seven Languages in Seven Weeks" by Bruce A. Tate. The original
 //    Erlang example code can be downloaded here:
 //    https://pragprog.com/titles/btlang/source_code
 //    A synchronous translator expects strings to be translated entered
@@ -50,14 +50,14 @@ pLiCppRuntime p_run = nullptr;
 ThreadId messaging_id;
 
 struct msg_request {
-  msg_request(std::string _text, ThreadId _sender_id): text(_text), sender_id(_sender_id) {}
-  std::string text;
+  msg_request(string _text, ThreadId _sender_id): text(_text), sender_id(_sender_id) {}
+  string text;
   ThreadId sender_id;
 };
 
 struct msg_response {
-  msg_response(std::string _text):text(_text) {}
-  std::string text;
+  msg_response(string _text):text(_text) {}
+  string text;
 };
 
 void msg_handler(pMsgBox incoming)
@@ -80,7 +80,7 @@ void msg_handler(pMsgBox incoming)
   }
   )
   .handle_default(
-  [&](std::shared_ptr<messaging::message_base> const& msg) {
+  [&](shared_ptr<messaging::message_base> const& msg) {
     auto wrapped_msg = dynamic_cast<messaging::wrapped_message<msg_request>*>(msg.get());
     if (wrapped_msg) {
       p_run->send_message(
@@ -92,9 +92,9 @@ void msg_handler(pMsgBox incoming)
   );
 }
 
-void translate(ThreadId id, std::string text)
+void translate(ThreadId id, string text)
 {
-  ThreadId my_id = std::this_thread::get_id();
+  ThreadId my_id = this_thread::get_id();
   p_run->send_message(id, msg_request(text, my_id));
   p_run->execute_blocking(
     my_id,
@@ -102,7 +102,7 @@ void translate(ThreadId id, std::string text)
     incoming->wait()
     .handle<msg_response>(
     [&](msg_response const& msg) {
-      std::cout << msg.text << std::endl;
+      cout << msg.text << endl;
     }
     );
   }
@@ -119,14 +119,14 @@ int main()
   messaging_id = p_run->spawn_messaging(msg_handler);
 
   bool quit_pressed=false;
-  std::thread char_thread(
+  thread char_thread(
   [&]() {
-    ThreadId my_id = std::this_thread::get_id();
+    ThreadId my_id = this_thread::get_id();
     p_run->add_messaging_to_thread(my_id);
 
     while (!quit_pressed) {
-      std::string in_data;
-      std::cin >> in_data;
+      string in_data;
+      cin >> in_data;
       if (in_data=="q") {
         p_run->remove_messaging_from_thread(my_id);
         quit_pressed=true;
@@ -138,7 +138,7 @@ int main()
 
   while(!quit_pressed) {
     p_run->exec();
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    this_thread::sleep_for(chrono::milliseconds(10));
   }
 
   char_thread.join();
@@ -154,9 +154,9 @@ int main()
   messaging_id = p_run->spawn_messaging(msg_handler);
 
   bool test_done=false;
-  std::thread test_thread(
+  thread test_thread(
   [&]() {
-    ThreadId my_id = std::this_thread::get_id();
+    ThreadId my_id = this_thread::get_id();
     p_run->add_messaging_to_thread(my_id);
 
     translate(messaging_id, "casa");
@@ -170,7 +170,7 @@ int main()
 
   while(!test_done) {
     p_run->exec();
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    this_thread::sleep_for(chrono::milliseconds(10));
   }
 
   test_thread.join();

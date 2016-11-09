@@ -46,8 +46,8 @@ using namespace std;
 using namespace LiCpp;
 
 struct msg_request {
-  msg_request(std::string _text): text(_text) {}
-  std::string text;
+  msg_request(string _text): text(_text) {}
+  string text;
 };
 
 
@@ -59,7 +59,7 @@ void translator(pMsgBox incoming)
     return msg.text == "casa";
   },
   [&]() {
-    std::cout << "house" << std::endl;
+    cout << "house" << endl;
   }
   )
   .handle_if<msg_request>(
@@ -67,12 +67,12 @@ void translator(pMsgBox incoming)
     return msg.text == "blanca";
   },
   [&]() {
-    std::cout << "white" << std::endl;
+    cout << "white" << endl;
   }
   )
   .handle_default(
   [&]() {
-    std::cout << "I don't understand." << std::endl;
+    cout << "I don't understand." << endl;
   }
   );
 }
@@ -85,11 +85,11 @@ int main()
   ThreadId translator_id = p_run->spawn_messaging(translator);
 
   bool quit_pressed=false;
-  std::thread char_thread(
+  thread char_thread(
   [&]() {
     while (!quit_pressed) {
-      std::string in_data;
-      std::cin >> in_data;
+      string in_data;
+      cin >> in_data;
       if (in_data=="q") {
         quit_pressed=true;
       } else
@@ -100,7 +100,7 @@ int main()
 
   while(!quit_pressed) {
     p_run->exec();
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    this_thread::sleep_for(chrono::milliseconds(10));
   }
 
   char_thread.join();
@@ -115,20 +115,20 @@ int main()
   ThreadId translator_id = p_run->spawn_messaging(translator);
 
   bool test_done=false;
-  std::thread test_thread(
+  thread test_thread(
   [&]() {
     p_run->send_message(translator_id, msg_request("casa"));
     p_run->send_message(translator_id, msg_request("blanca"));
     p_run->send_message(translator_id, msg_request("humphrey"));
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    this_thread::sleep_for(chrono::milliseconds(100));
     test_done=true;
   }
   );
 
   while(!test_done) {
     p_run->exec();
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    this_thread::sleep_for(chrono::milliseconds(10));
   }
 
   test_thread.join();
