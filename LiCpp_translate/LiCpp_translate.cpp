@@ -34,7 +34,7 @@ DEALINGS IN THE SOFTWARE.
 //    "Seven Languages in Seven Weeks" by Bruce A. Tate. The original
 //    Erlang example code can be downloaded here:
 //    https://pragprog.com/titles/btlang/source_code
-//    An asynchronous translator awaits strings to be translated entered by
+//    An asynchronous translator expects strings to be translated entered by
 //    the user and prints out the translation if the word is known. If the
 //    word is unknown, it prints "don't understand".
 
