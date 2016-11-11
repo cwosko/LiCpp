@@ -51,6 +51,7 @@ DEALINGS IN THE SOFTWARE.
 #include <chrono>
 #include <random>
 #include <algorithm>
+#include <atomic>
 
 using namespace std;
 using namespace LiCpp;
@@ -448,7 +449,7 @@ int main()
 
 #ifndef TEST
 
-  bool quit_pressed=false;
+  atomic<bool> quit_pressed(false);
   thread char_thread([&]() {
     while (!quit_pressed) {
       string in_data;
@@ -484,7 +485,7 @@ int main()
 
 #else
 
-  bool test_done=false;
+  atomic<bool> test_done(false);
   thread test_thread([&]() {
     while (!test_done) {
 

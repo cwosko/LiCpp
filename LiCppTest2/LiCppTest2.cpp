@@ -37,6 +37,9 @@ DEALINGS IN THE SOFTWARE.
 
 #include "LiC++.h"
 
+#include <iostream>
+#include <atomic>
+
 using namespace std;
 using namespace LiCpp;
 
@@ -116,7 +119,7 @@ int main()
     pLiCppRuntime p_run = make_shared<LiCppRuntime>();
     ThreadId sv_id = SuperVisor::CreateAndRun(p_run);
 
-    bool test_done=false;
+    atomic<bool> test_done(false);
     thread test_thread([&]() {
       this_thread::sleep_for(chrono::seconds(5));
       p_run->suspend_thread(sv_id);

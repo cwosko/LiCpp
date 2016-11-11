@@ -43,6 +43,7 @@ DEALINGS IN THE SOFTWARE.
 #include "LiC++.h"
 
 #include <iostream>
+#include <atomic>
 
 using namespace std;
 using namespace LiCpp;
@@ -98,7 +99,7 @@ int main()
   ThreadId coroner_id = p_run->spawn_messaging(coroner);
   p_run->link_thread_to_supervisor(roulette_id, coroner_id);
 
-  bool quit_pressed=false;
+  atomic<bool> quit_pressed(false);
   thread char_thread(
   [&]() {
     while (!quit_pressed) {
@@ -133,7 +134,7 @@ int main()
   ThreadId coroner_id = p_run->spawn_messaging(coroner);
   p_run->link_thread_to_supervisor(roulette_id, coroner_id);
 
-  bool test_done=false;
+  atomic<bool> test_done(false);
   thread test_thread(
   [&]() {
     p_run->send_message(roulette_id, msg_number(2));

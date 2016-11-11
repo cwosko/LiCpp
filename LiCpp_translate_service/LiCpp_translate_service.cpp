@@ -41,6 +41,7 @@ DEALINGS IN THE SOFTWARE.
 #include "LiC++.h"
 
 #include <iostream>
+#include <atomic>
 
 using namespace std;
 using namespace LiCpp;
@@ -118,7 +119,7 @@ int main()
 
   messaging_id = p_run->spawn_messaging(msg_handler);
 
-  bool quit_pressed=false;
+  atomic<bool> quit_pressed(false);
   thread char_thread(
   [&]() {
     ThreadId my_id = this_thread::get_id();
@@ -153,7 +154,7 @@ int main()
 
   messaging_id = p_run->spawn_messaging(msg_handler);
 
-  bool test_done=false;
+  atomic<bool> test_done(false);
   thread test_thread(
   [&]() {
     ThreadId my_id = this_thread::get_id();

@@ -41,6 +41,7 @@ DEALINGS IN THE SOFTWARE.
 #include "LiC++.h"
 
 #include <iostream>
+#include <atomic>
 
 using namespace std;
 using namespace LiCpp;
@@ -84,7 +85,7 @@ int main()
   pLiCppRuntime p_run = make_shared<LiCppRuntime>();
   ThreadId translator_id = p_run->spawn_messaging(translator);
 
-  bool quit_pressed=false;
+  atomic<bool> quit_pressed(false);
   thread char_thread(
   [&]() {
     while (!quit_pressed) {
@@ -114,7 +115,7 @@ int main()
   pLiCppRuntime p_run = make_shared<LiCppRuntime>();
   ThreadId translator_id = p_run->spawn_messaging(translator);
 
-  bool test_done=false;
+  atomic<bool> test_done(false);
   thread test_thread(
   [&]() {
     p_run->send_message(translator_id, msg_request("casa"));

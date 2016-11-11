@@ -36,6 +36,9 @@ DEALINGS IN THE SOFTWARE.
 
 #include "LiC++.h"
 
+#include <iostream>
+#include <atomic>
+
 using namespace std;
 using namespace LiCpp;
 
@@ -117,7 +120,7 @@ int main()
 
   p_run->send_message(messaging_id, msg_ping());
 
-  bool test_done=false;
+  atomic<bool> test_done(false);
   thread test_thread([&]() {
     this_thread::sleep_for(chrono::seconds(3));
 
