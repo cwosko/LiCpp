@@ -12,6 +12,7 @@ paradigm of handling errors in C++. It uses the Message Passing example from
 the book "C++ Concurrency in Action" by Anthony Williams in order to allow
 message based communication between threads. It also uses the Thread Safe List
 example from the same book for managing threads in a thread register.
+
 Basically this library enables to start, pause, resume and kill threads, while
 allowing them to communicate via message queues. It also allows to link
 threads for monitoring purposes. If one thread is dying (getting killed or
