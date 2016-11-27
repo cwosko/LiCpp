@@ -35,7 +35,7 @@ DEALINGS IN THE SOFTWARE.
 //    message based communication between threads. It also uses the Thread Safe List
 //    example from the same book for managing threads in a thread register.
 //    Basically this library enables to start, pause, resume and kill threads, while
-//    allowing them to communicate via message queues. It also allows to link
+//    allowing them to communication via message queues. It also allows to link
 //    threads for monitoring purposes. If one thread is dying (getting killed or
 //    killing itself by throwing an exception) the monitoring thread gets notified
 //    and may react by replacing the dead one. See the following link for more
@@ -178,10 +178,12 @@ namespace LiCpp {
       //    Requires the unique thread ID of the thread to be removed.
       void remove_thread(ThreadId id) {
         _register.for_each([&](RegisterEntry& entry) {
-          if (id == entry.thread_id)
+          if (id == entry.thread_id) {
             entry.std_thread.join();
+            entry.thread_id=ThreadId();
+          }
         });
-        unregister_thread(id);
+        unregister_thread(ThreadId());
       }
 
       //  Method Unregister Thread
